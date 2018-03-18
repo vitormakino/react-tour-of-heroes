@@ -31,6 +31,7 @@ class App extends Component {
 
   handleHeroNameChange(name) {
     this.setState((prevState, props) => ({
+      heroes: prevState.heroes.map(h => ( prevState.selectedHero.id === h.id ? {...h,name} : h )),
       selectedHero: {...prevState.selectedHero, name}
     }));
   }

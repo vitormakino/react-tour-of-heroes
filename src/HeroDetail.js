@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './HeroDetail.css';
+
 class HeroDetail extends React.Component {
     constructor(props) {
         super(props);
@@ -17,19 +19,18 @@ class HeroDetail extends React.Component {
         const { id, name } = this.props;
 
         if(!id) {
-            return <span />
+            return null;
         }
         return (
-            <div>
+            <div className="hero-details">
              <h2>{name} Details</h2>
              <div><span>id: </span>{id}</div>
              <div>
-               <label>name:
-                 <input type="text"
-                        placeholder="name"
-                        value={name}
-                        onChange={this.handleChange}/>
-               </label>
+               <label htmlFor="name">name: </label>
+               <input type="text"
+                      placeholder="name"
+                      value={name}
+                      onChange={this.handleChange}/>
              </div>
             </div>
             );
