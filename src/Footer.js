@@ -1,19 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
+import PreviewHero from './PreviewHero';
+
 import { getSelectedHeroes } from './reducers';
-import { editHero } from './actions';
-import HeroDetail from './HeroDetail';
 
 class Footer extends React.Component {
     render() {
      return <footer>
         {this.props.heroes.map(hero => (
-          <HeroDetail key={hero.id}
-                      {...hero}
-                      onNameChange={(name) => {
-                        this.props.onNameChange(hero.id, name);
-                      }}/>
+          <PreviewHero key={hero.id}
+                       {...hero} />
         ))}
       </footer>
     }
@@ -27,7 +24,7 @@ class Footer extends React.Component {
   
   const mapDispatchToProps = (dispatch) => {
     return {
-      onNameChange: (id, name) => dispatch(editHero(id, name))
+//      onNameChange: (id, name) => dispatch(editHero(id, name))
     }
   };
 

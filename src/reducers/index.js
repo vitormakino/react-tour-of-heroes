@@ -6,6 +6,9 @@ const hero = (state = {}, action) => {
           return {...state, id: action.id, name: action.name };
         case 'EDIT_HERO':
           return {...state, name: action.name };
+        case 'RECEIVE_HERO':
+        case 'REQUEST_HERO':
+            return {...state, action };  
         default:
             return state;
     }
@@ -24,6 +27,17 @@ export const heroes = (state = [], action) => {
     }
 };
 
+export const heroesById = (state={}, action ) => {
+  switch(action.type) {
+    case 'RECEIVE_HERO':
+    case 'REQUEST_HERO':
+      return {...state,
+              [action.id]: hero(state[action.id], action)};
+    default:
+      return state
+  }
+};
+
 export const selectedHero = (state = {}, action) => {
   switch(action.type) {
       case 'TOGGLE_SELECT_HERO':
@@ -36,7 +50,7 @@ export const selectedHero = (state = {}, action) => {
 
 const getAllHeroes = (state) => state.heroes;
 export const getIdSelectedHero = (state) => state.selectedHero;
-
+export const getHeroById = (state, id) => state.heroesById[id];
 export const getSelectedHeroes = (state) => {
   const all = getAllHeroes(state);
   const id = getIdSelectedHero(state);
@@ -47,4 +61,4 @@ export const getSelectedHeroes = (state) => {
   return all.filter(hero => id === hero.id);
 };
 
-export default combineReducers({ heroes, selectedHero});
+export default combineReducers({ heroes, heroesById, selectedHero});

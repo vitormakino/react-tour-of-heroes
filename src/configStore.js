@@ -12,6 +12,13 @@ const logger = ({ getState }) => next => action => {
   return returnValue;
 }
 
+const supportForPromiseToDispatch = (store) => next => action => {
+  if(typeof action.then === 'function') {
+    return action.then(next);
+  }
+  return next(action);
+}
+
 export default () => {
   const initialState = {
     heroes: HEROES
@@ -20,7 +27,8 @@ export default () => {
   const store = 
     createStore(heroApp,
                 initialState,
-                applyMiddleware(logger) );
+                applyMiddleware(supportForPromiseToDispatch,
+                                logger) );
 
   return store;
 };

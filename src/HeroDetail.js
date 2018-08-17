@@ -1,6 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom';
 
 import './HeroDetail.css';
+import { editHero, fetchHero } from './actions';
+import { getSelectedHeroes, getHeroById } from './reducers';
 
 class HeroDetail extends React.Component {
     constructor(props) {
@@ -9,17 +13,22 @@ class HeroDetail extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
+    componentDidMount() {
+      const {id, fetchHeroById} = this.props;
+      fetchHeroById(id);
+    }
+
     handleChange(event) {
-        if(this.props.onNameChange) {
-            this.props.onNameChange(event.target.value);
-        }        
+      const { id, onNameChange } = this.props;  
+      onNameChange(id, event.target.value);     
     }
 
     render() {
+        
         const { id, name } = this.props;
 
         if(!id) {
-            return null;
+            return <span>Loading...</span>;
         }
         return (
             <div className="hero-details">
@@ -37,4 +46,22 @@ class HeroDetail extends React.Component {
     }
 }
 
+const mapStateToProps = (state, { match }) => {
+  const id = match.params.id;
+  const hero = getHeroById(state,id);
+  console.log(hero);
+  return {
+    ...hero,
+    id
+  }
+};
+  
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onNameChange: (id, name) => dispatch(editHero(id, name)),
+    fetchHeroById: (id) => dispatch(fetchHero(id))
+  }
+};
+
+HeroDetail = withRouter(connect(mapStateToProps, mapDispatchToProps)(HeroDetail));
 export default HeroDetail;
